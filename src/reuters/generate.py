@@ -18,6 +18,7 @@ def generate(topics_file, data_dir, output_file):
     :type output_file: str
     """
     # topics
+    print("Reading topcs: %s" % topics_file)
     with open(topics_file, "r") as fp:
         topics = fp.readlines()
     topics = [x.strip() for x in topics]
@@ -31,7 +32,7 @@ def generate(topics_file, data_dir, output_file):
     for topic in topics:
         atts.append((topic, ['y', 'n']))
     relation = "Reuters-21578: '-C %d'" % len(topics)
-    desc = 'Reuters 21578 dataset:\nhttp://kdd.ics.uci.edu/databases/reuters21578/reuters21578.html'
+    desc = 'Reuters 21578 dataset:\nhttp://kdd.ics.uci.edu/databases/reuters/reuters.html'
     data = []
     dataset = {
         'relation': relation,
@@ -50,6 +51,7 @@ def generate(topics_file, data_dir, output_file):
         sgm_files.append(fname)
     sgm_files.sort()
 
+    print("Reading .sgm...")
     for fname in sgm_files:
         print(fname)
         with open(fname, "r", encoding='ISO-8859-1') as fp:
@@ -86,6 +88,7 @@ def generate(topics_file, data_dir, output_file):
                         row.append('n')
 
     # write ARFF
+    print("Writing: %s" % output_file)
     with open(output_file, "wt") as fp:
         arff.dump(dataset, fp)
 
@@ -99,8 +102,8 @@ def main(args=None):
     :type args: list
     """
     parser = argparse.ArgumentParser(
-        description='Reads the Bearable App CSV output and lists medications or their changes.',
-        prog="bstats-list-medications")
+        description='Generates a MEKA ARFF file from the Reuters 21578 SGML files.',
+        prog="reuters-generate")
     parser.add_argument("-t", "--topics_file", metavar="FILE", required=True, dest="topics_file", help="the file with all the topics (one per line).")
     parser.add_argument("-d", "--data_dir", metavar="DIR", required=True, dest="data_dir", help="the directory with the .sgm files.")
     parser.add_argument("-o", "--output_file", metavar="FILE", required=True, dest="output_file", help="the ARFF file to generate.")
