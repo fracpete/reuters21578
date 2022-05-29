@@ -25,13 +25,13 @@ def generate(topics_file, data_dir, output_file):
 
     # structure
     atts = []
+    for topic in topics:
+        atts.append((topic, ['y', 'n']))
     atts.append(('file', 'STRING'))
     atts.append(('new_id', 'STRING'))
     atts.append(('old_id', 'STRING'))
     atts.append(('text', 'STRING'))
-    for topic in topics:
-        atts.append((topic, ['y', 'n']))
-    relation = "Reuters-21578: '-C %d'" % len(topics)
+    relation = "Reuters-21578: -C %d" % len(topics)
     desc = 'Reuters 21578 dataset:\nhttp://kdd.ics.uci.edu/databases/reuters/reuters.html'
     data = []
     dataset = {
@@ -77,15 +77,15 @@ def generate(topics_file, data_dir, output_file):
                 # add row
                 row = []
                 data.append(row)
-                row.append(f)
-                row.append(doc['newid'])
-                row.append(doc['oldid'])
-                row.append(body_text)
                 for topic in topics:
                     if topic in topics_set:
                         row.append('y')
                     else:
                         row.append('n')
+                row.append(os.path.basename(fname))
+                row.append(doc['newid'])
+                row.append(doc['oldid'])
+                row.append(body_text)
 
     # write ARFF
     print("Writing: %s" % output_file)
