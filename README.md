@@ -27,7 +27,7 @@ And extract it.
 * Create virtual environment
 
   ```bash
-  virtualenv -p /usr/bin/python3
+  virtualenv -p /usr/bin/python3 venv
   ./venv/bin/pip install .
   ```
 
